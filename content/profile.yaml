@@ -1,0 +1,46 @@
+# Who you are. Shown in the hero, About, Contact and in search-engine results.
+# Text in [square brackets] is placeholder.
+
+name: "[Your Name]"
+role: "[Computational Biologist]"
+affiliation: "[Ph.D. Candidate, University]"
+
+# One short line under your name in the hero (keep it under ~12 words)
+tagline: "Decoding how tissues age, one cell at a time."
+
+# Small status line with a live dot at the top of the hero. Leave empty ("") to hide.
+status: "[Open to industry R&D roles · 2027]"
+
+# A URL, or put a photo in the public/ folder and write e.g. /photo.jpg
+avatar: https://github.com/wxb1998.png
+
+# Short phrases shown as chips in the About section
+interests:
+  - Single-cell & single-nucleus RNA-seq
+  - Aging biology
+  - Exercise physiology
+  - Gene regulatory networks
+  - Cell–cell communication
+
+# Big numbers in the About section. Delete this block to hide it.
+highlights:
+  - value: 2
+    label: species profiled
+  - value: 3
+    label: sequencing modalities
+  - value: 2
+    label: open-source pipelines
+
+# Leave a link empty ("") to hide it.
+links:
+  email: "your.email@example.com"
+  github: "https://github.com/wxb1998"
+  scholar: ""     # Google Scholar profile URL
+  orcid: ""       # https://orcid.org/0000-0000-0000-0000
+  linkedin: ""
+  x: ""
+  cv: ""          # put cv.pdf in public/ and write /cv.pdf
+
+contact:
+  heading: "Let's work together"
+  text: "[I'm looking for computational biology roles in industry R&D, and I'm always happy to talk single-cell genomics. The fastest way to reach me is email.]"

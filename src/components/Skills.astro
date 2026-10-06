@@ -1,0 +1,158 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+  index: string;
+  groups: { group: string; items: string[] }[];
+}
+const { index, groups } = Astro.props;
+const key = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+---
+
+<section class="section" id="skills">
+  <div class="container">
+    <SectionHeader index={index} title="Skills" kicker="cat skills.yaml" />
+
+    <div class="terminal reveal">
+      <div class="bar" aria-hidden="true">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="title mono">~/skills.yaml</span>
+      </div>
+      <div class="body mono">
+        <p class="line" style="--l: 0"><span class="prompt">$</span> cat skills.yaml</p>
+        {
+          groups.map((g, i) => (
+            <div class="line group" style={`--l: ${i + 1}`}>
+              <span class="key">{key(g.group)}</span>
+              <span class="punct">:</span>
+              <ul class="values" aria-label={g.group}>
+                {g.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+        <p class="line" style={`--l: ${groups.length + 1}`}><span class="prompt">$</span> <span class="cursor" aria-hidden="true"></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .terminal {
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: rgb(8 12 20 / 0.85);
+    box-shadow:
+      0 30px 80px -30px rgb(56 225 255 / 0.25),
+      inset 0 1px 0 rgb(255 255 255 / 0.04);
+    overflow: hidden;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgb(255 255 255 / 0.02);
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .red {
+    background: #ff5f57;
+  }
+
+  .yellow {
+    background: #febc2e;
+  }
+
+  .green {
+    background: #28c840;
+  }
+
+  .title {
+    margin-left: 12px;
+    color: var(--dim);
+    font-size: 0.78rem;
+  }
+
+  .body {
+    padding: clamp(18px, 3vw, 28px);
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    line-height: 1.9;
+  }
+
+  .line {
+    margin: 0;
+  }
+
+  /* Lines print one after another once the terminal scrolls into view */
+  :global(.js) .terminal .line {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity 0.35s,
+      transform 0.35s;
+    transition-delay: calc(var(--l) * 160ms + 200ms);
+  }
+
+  :global(.js) .terminal.is-visible .line {
+    opacity: 1;
+    transform: none;
+  }
+
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 10px;
+  }
+
+  .prompt {
+    color: var(--green);
+  }
+
+  .key {
+    color: var(--violet);
+  }
+
+  .punct {
+    color: var(--dim);
+    margin-left: -10px;
+  }
+
+  .values {
+    display: contents;
+    list-style: none;
+  }
+
+  .values li {
+    color: var(--cyan);
+  }
+
+  .values li:not(:last-child)::after {
+    content: ',';
+    color: var(--dim);
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.1em;
+    vertical-align: -0.2em;
+    background: var(--text);
+    animation: blink 1.05s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

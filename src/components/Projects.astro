@@ -1,0 +1,270 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  index: string;
+  projects: CollectionEntry<'projects'>[];
+}
+const { index, projects } = Astro.props;
+const rendered = await Promise.all(projects.map(async (p) => ({ ...p, Content: (await render(p)).Content })));
+---
+
+<section class="section" id="projects">
+  <div class="container">
+    <SectionHeader index={index} title="Projects" kicker="ls ./projects" />
+
+    <div class="list">
+      {
+        rendered.map(({ data, Content }, i) => (
+          <article class="project card reveal">
+            <div class="head">
+              <p class="mono pid">P-{String(i + 1).padStart(2, '0')}</p>
+              <h3>{data.title}</h3>
+              <p class="summary">{data.summary}</p>
+            </div>
+
+            {data.metrics.length > 0 && (
+              <dl class="metrics">
+                {data.metrics.map((m) => (
+                  <div>
+                    <dt class="mono">{m.label}</dt>
+                    <dd class="gradient-text">{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+
+            <div class="body">
+              <Content />
+            </div>
+
+            {data.pipeline.length > 0 && (
+              <div class="pipeline-wrap">
+                <p class="mono label">pipeline</p>
+                <ol class="pipeline" style={`--n: ${data.pipeline.length}`}>
+                  {data.pipeline.map((step, s) => (
+                    <li style={`--s: ${s}`}>
+                      <span class="step mono">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            <div class="foot">
+              <ul class="chips">
+                {data.tags.map((t) => (
+                  <li class="chip">{t}</li>
+                ))}
+              </ul>
+              <div class="links">
+                {data.links.paper && (
+                  <a class="btn" href={data.links.paper}>
+                    <Icon name="paper" size={16} /> Paper
+                  </a>
+                )}
+                {data.links.demo && (
+                  <a class="btn" href={data.links.demo}>
+                    <Icon name="external" size={16} /> Demo
+                  </a>
+                )}
+                {data.links.code && (
+                  <a class="btn" href={data.links.code}>
+                    <Icon name="code" size={16} /> Code
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .list {
+    display: grid;
+    gap: 24px;
+  }
+
+  .project {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 24px 48px;
+    padding: clamp(24px, 4vw, 40px);
+  }
+
+  .head {
+    grid-column: 1;
+  }
+
+  .pid {
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 0.78rem;
+  }
+
+  h3 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+  }
+
+  .summary {
+    margin: 10px 0 0;
+    color: var(--muted);
+  }
+
+  .metrics {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgb(5 7 12 / 0.5);
+  }
+
+  .metrics div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .metrics dd {
+    order: -1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .metrics dt {
+    color: var(--muted);
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  .body {
+    grid-column: 1;
+    color: #c3cede;
+  }
+
+  .body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .pipeline-wrap,
+  .foot {
+    grid-column: 1 / -1;
+  }
+
+  .label {
+    margin: 0 0 12px;
+    color: var(--dim);
+    font-size: 0.75rem;
+  }
+
+  .label::before {
+    content: '$ ';
+    color: var(--accent);
+  }
+
+  /* Analysis steps joined by a "data flowing" connector; each step lights up in turn.
+     The connector sits before each step, so a wrapped line starts with one instead of ending with one. */
+  .pipeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 10px;
+  }
+
+  .pipeline li {
+    display: flex;
+    align-items: center;
+  }
+
+  .pipeline li:not(:first-child)::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--accent) 0 4px, transparent 4px 8px);
+    background-size: 16px 1px;
+    opacity: 0.6;
+    animation: flow 0.8s linear infinite;
+  }
+
+  .step {
+    padding: 6px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--bg-raised);
+    color: var(--muted);
+    font-size: 0.76rem;
+    white-space: nowrap;
+    animation: pulse-step calc(var(--n) * 0.45s) linear infinite;
+    animation-delay: calc(var(--s) * 0.45s);
+  }
+
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .links {
+    display: flex;
+    gap: 10px;
+  }
+
+  .links .btn {
+    height: 38px;
+    padding: 0 16px;
+    font-size: 0.8rem;
+  }
+
+  @keyframes flow {
+    to {
+      background-position: 16px 0;
+    }
+  }
+
+  @keyframes pulse-step {
+    0%,
+    12% {
+      color: var(--text);
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgb(56 225 255 / 0.35);
+    }
+    24%,
+    100% {
+      color: var(--muted);
+      border-color: var(--border-strong);
+      box-shadow: none;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .project {
+      grid-template-columns: 1fr;
+    }
+
+    .metrics {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+</style>

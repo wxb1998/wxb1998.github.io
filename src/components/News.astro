@@ -1,0 +1,70 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import { inlineMarkdown } from '../lib/inline-markdown';
+
+interface Props {
+  index: string;
+  items: { date: string; text: string }[];
+}
+const { index, items } = Astro.props;
+---
+
+<section class="section" id="news">
+  <div class="container">
+    <SectionHeader index={index} title="News" kicker="tail -f news.log" />
+
+    <ol class="log card reveal">
+      {
+        items.map((item) => (
+          <li>
+            <time class="mono" datetime={item.date}>
+              [{item.date.replace(/-/g, '.')}]
+            </time>
+            <span set:html={inlineMarkdown(item.text)} />
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .log {
+    list-style: none;
+    margin: 0;
+    padding: clamp(16px, 3vw, 28px);
+    display: grid;
+    gap: 4px;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 16px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  li:hover {
+    background: var(--surface-hover);
+  }
+
+  time {
+    color: var(--accent);
+    font-size: 0.82rem;
+    padding-top: 2px;
+  }
+
+  li:first-child time::after {
+    content: ' new';
+    color: var(--magenta);
+  }
+
+  @media (max-width: 640px) {
+    li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+</style>

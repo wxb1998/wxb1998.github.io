@@ -1,0 +1,42 @@
+---
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+const built = new Date();
+const year = built.getFullYear();
+const stamp = built.toISOString().slice(0, 10);
+---
+
+<footer class="footer">
+  <div class="container inner mono">
+    <p>© {year} {name}</p>
+    <p class="build">last_build: <time datetime={stamp}>{stamp}</time></p>
+    <a href="#top">back to top ↑</a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    color: var(--dim);
+    font-size: 0.76rem;
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--muted);
+  }
+</style>

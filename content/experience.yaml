@@ -1,0 +1,18 @@
+# Research and work experience, most recent first. `end`, `location` and `points` are optional.
+# Keep each point to one line, and lead with what you did and what it achieved.
+
+- role: "[Graduate Researcher]"
+  org: "[Lab Name, University]"
+  start: "2025"
+  end: "present"
+  location: "[City]"
+  points:
+    - "[Built single-cell analysis pipelines in R and Python for multi-tissue datasets.]"
+    - "[Identified aging-associated cell states and regulators in primate adrenal tissue.]"
+
+- role: "[Research Intern]"
+  org: "[Company Name]"
+  start: "2024-06"
+  end: "2024-09"
+  points:
+    - "[What you worked on, and the result.]"

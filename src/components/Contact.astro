@@ -1,0 +1,123 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+import type { ProfileLink } from '../lib/links';
+
+interface Props {
+  index: string;
+  heading: string;
+  text: string;
+  email?: string;
+  links: ProfileLink[];
+}
+const { index, heading, text, email, links } = Astro.props;
+const others = links.filter((l) => l.key !== 'email');
+---
+
+<section class="section contact" id="contact">
+  <div class="container">
+    <SectionHeader index={index} title="Contact" kicker="ping" />
+
+    <div class="panel card reveal">
+      <div class="glow" aria-hidden="true"></div>
+      <h3 class="heading gradient-text">{heading}</h3>
+      <p class="text">{text}</p>
+
+      {
+        email && (
+          <div class="email">
+            <a class="btn btn-primary" href={`mailto:${email}`}>
+              <Icon name="email" size={16} /> {email}
+            </a>
+            <button type="button" class="btn" data-copy={email}>
+              <Icon name="copy" size={16} /> <span data-copy-label>copy</span>
+            </button>
+          </div>
+        )
+      }
+
+      {
+        others.length > 0 && (
+          <ul class="links">
+            {others.map((l) => (
+              <li>
+                <a class="mono" href={l.href}>
+                  <Icon name={l.key} size={16} /> {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-bottom: clamp(72px, 10vw, 120px);
+  }
+
+  .panel {
+    padding: clamp(32px, 6vw, 72px);
+    text-align: center;
+  }
+
+  .glow {
+    position: absolute;
+    left: 50%;
+    top: -60%;
+    width: 70%;
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgb(167 139 250 / 0.22), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .heading {
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    letter-spacing: -0.03em;
+  }
+
+  .text {
+    max-width: 56ch;
+    margin: 20px auto 32px;
+    color: var(--muted);
+  }
+
+  .email {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .email .btn-primary {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 24px;
+    margin: 32px 0 0;
+    padding: 0;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .links a:hover {
+    color: var(--accent);
+  }
+</style>

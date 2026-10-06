@@ -1,0 +1,266 @@
+---
+interface Props {
+  brand: string;
+  sections: { id: string; label: string; index: string }[];
+  resume?: string;
+}
+const { brand, sections, resume } = Astro.props;
+---
+
+<header class="nav" data-nav>
+  <div class="container nav-inner">
+    <a class="brand mono" href="#top" aria-label="Back to top">
+      <span class="brand-mark" aria-hidden="true"></span>{brand}<span class="caret" aria-hidden="true">_</span>
+    </a>
+
+    <button class="menu-btn mono" type="button" aria-expanded="false" aria-controls="nav-links" data-menu-btn>
+      <span class="menu-icon" aria-hidden="true"></span>menu
+    </button>
+
+    <nav id="nav-links" class="links" aria-label="Sections" data-menu>
+      <ol>
+        {
+          sections.map((s) => (
+            <li>
+              <a class="mono" href={`#${s.id}`} data-nav-link={s.id}>
+                <span class="idx">{s.index}</span>
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      {resume && <a class="btn resume" href={resume}>Resume</a>}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--nav-h);
+    border-bottom: 1px solid transparent;
+    transition:
+      background 0.3s,
+      border-color 0.3s,
+      backdrop-filter 0.3s;
+  }
+
+  .nav.scrolled {
+    background: rgb(5 7 12 / 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: var(--border);
+  }
+
+  .nav-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--gradient);
+    box-shadow: 0 0 14px rgb(56 225 255 / 0.7);
+  }
+
+  .caret {
+    color: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .links ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 4px;
+  }
+
+  .links a[data-nav-link] {
+    display: inline-flex;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+
+  .links a[data-nav-link]:hover,
+  .links a[data-nav-link].active {
+    color: var(--text);
+    background: var(--surface-hover);
+    text-decoration: none;
+  }
+
+  .links .idx {
+    color: var(--accent);
+    opacity: 0.8;
+  }
+
+  .resume {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 0.8rem;
+  }
+
+  .menu-btn {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: rgb(5 7 12 / 0.6);
+    color: var(--text);
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .menu-icon,
+  .menu-icon::before {
+    display: block;
+    width: 14px;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.25s;
+  }
+
+  .menu-icon {
+    position: relative;
+    transform: translateY(-3px);
+  }
+
+  .menu-icon::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+  }
+
+  [aria-expanded='true'] .menu-icon {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  [aria-expanded='true'] .menu-icon::before {
+    transform: translateY(-6px) rotate(-90deg);
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .menu-btn {
+      display: inline-flex;
+    }
+
+    .links {
+      position: fixed;
+      inset: var(--nav-h) 0 auto;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+      padding: 16px var(--gutter) 24px;
+      background: rgb(5 7 12 / 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-8px);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.25s,
+        transform 0.25s var(--ease-out),
+        visibility 0.25s;
+    }
+
+    .links.open {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .links ol {
+      flex-direction: column;
+    }
+
+    .links a[data-nav-link] {
+      padding: 12px 8px;
+      font-size: 0.95rem;
+    }
+
+    .resume {
+      justify-content: center;
+      height: 44px;
+    }
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-btn]')!;
+  const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const setOpen = (open: boolean) => {
+    menu.classList.toggle('open', open);
+    button.setAttribute('aria-expanded', String(open));
+  };
+  button.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+
+  // Highlight the section currently in view
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')].map((a) => [a.dataset.navLink!, a]),
+  );
+  const spy = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        links.forEach((a) => a.classList.remove('active'));
+        links.get(entry.target.id)?.classList.add('active');
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  links.forEach((_, id) => {
+    const section = document.getElementById(id);
+    if (section) spy.observe(section);
+  });
+</script>

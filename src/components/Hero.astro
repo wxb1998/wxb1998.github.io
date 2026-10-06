@@ -1,0 +1,321 @@
+---
+import Icon from './Icon.astro';
+import type { ProfileLink } from '../lib/links';
+
+interface Props {
+  name: string;
+  role: string;
+  affiliation: string;
+  tagline: string;
+  status?: string;
+  links: ProfileLink[];
+  clusters: string[];
+  primaryTarget: string;
+}
+const { name, role, affiliation, tagline, status, links, clusters, primaryTarget } = Astro.props;
+const resume = links.find((l) => l.key === 'cv');
+const social = links.filter((l) => l.key !== 'cv');
+---
+
+<section class="hero" id="top">
+  <canvas class="field" data-cell-field data-labels={JSON.stringify(clusters)} aria-hidden="true"></canvas>
+  <div class="fade" aria-hidden="true"></div>
+
+  <div class="container inner">
+    {
+      status && (
+        <p class="status mono">
+          <span class="dot" aria-hidden="true" />
+          {status}
+        </p>
+      )
+    }
+    <p class="role mono">{role} <span class="sep">/</span> {affiliation}</p>
+    <h1 class="name" data-hero-scramble>{name}</h1>
+    <p class="tagline mono"><span class="prompt" aria-hidden="true">&gt;</span> <span data-type>{tagline}</span><span class="cursor" aria-hidden="true"></span></p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href={`#${primaryTarget}`}>View my work <Icon name="arrow" size={16} /></a>
+      {resume && <a class="btn" href={resume.href}><Icon name="cv" size={16} /> Resume</a>}
+    </div>
+
+    {
+      social.length > 0 && (
+        <ul class="social">
+          {social.map((l) => (
+            <li>
+              <a href={l.href} aria-label={l.label} title={l.label}>
+                <Icon name={l.key} size={20} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <div class="hud mono" aria-hidden="true">
+    <span>n_cells = <b data-cell-count>—</b></span>
+    <span>n_clusters = <b>{clusters.length}</b></span>
+    <span class="hud-live">embedding: umap_3d</span>
+  </div>
+
+  <a class="scroll-cue mono" href="#about" aria-label="Scroll to content">
+    <span>scroll</span><span class="line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: calc(var(--nav-h) + 24px) 0 96px;
+  }
+
+  .field {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Keeps the text side readable and blends the hero into the page */
+  .fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, var(--bg) 0%, rgb(5 7 12 / 0.85) 28%, transparent 60%),
+      linear-gradient(0deg, var(--bg) 0%, transparent 22%);
+  }
+
+  .inner {
+    position: relative;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 28px;
+    padding: 6px 14px 6px 10px;
+    border: 1px solid rgb(74 222 128 / 0.3);
+    border-radius: 999px;
+    background: rgb(74 222 128 / 0.08);
+    color: var(--green);
+    font-size: 0.78rem;
+  }
+
+  .dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--green);
+    animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .role {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: clamp(0.82rem, 1.6vw, 0.95rem);
+  }
+
+  .sep {
+    color: var(--dim);
+  }
+
+  .name {
+    max-width: 14ch;
+    font-size: clamp(3rem, 9vw, 6.4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    background: linear-gradient(180deg, #ffffff 30%, #9fb4d3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tagline {
+    min-height: 1.7em;
+    margin: 24px 0 36px;
+    max-width: 56ch;
+    color: var(--text);
+    font-size: clamp(0.95rem, 2vw, 1.12rem);
+  }
+
+  .prompt {
+    color: var(--accent);
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.1em;
+    margin-left: 4px;
+    vertical-align: -0.18em;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: blink 1.05s steps(1) infinite;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .social {
+    list-style: none;
+    display: flex;
+    gap: 6px;
+    margin: 28px 0 0;
+    padding: 0;
+  }
+
+  .social a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    color: var(--muted);
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+
+  .social a:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .hud {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 32px;
+    display: flex;
+    gap: 18px;
+    color: var(--dim);
+    font-size: 0.72rem;
+  }
+
+  .hud b {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .hud-live::before {
+    content: '● ';
+    color: var(--magenta);
+    animation: blink 1.6s steps(1) infinite;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .scroll-cue:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .scroll-cue .line {
+    position: relative;
+    width: 56px;
+    height: 1px;
+    overflow: hidden;
+    background: var(--border-strong);
+  }
+
+  .scroll-cue .line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    animation: sweep 2s var(--ease-out) infinite;
+  }
+
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes sweep {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .scroll-cue {
+      left: calc((100vw - var(--container)) / 2 + var(--gutter));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      align-items: flex-end;
+    }
+
+    .fade {
+      background:
+        linear-gradient(0deg, var(--bg) 8%, rgb(5 7 12 / 0.82) 40%, rgb(5 7 12 / 0.1) 62%),
+        linear-gradient(180deg, rgb(5 7 12 / 0.6), transparent 20%);
+    }
+
+    .hud {
+      display: none;
+    }
+
+    .scroll-cue {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initCellField } from '../scripts/cell-field';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-cell-field]');
+  const counter = document.querySelector<HTMLElement>('[data-cell-count]');
+  if (canvas) {
+    initCellField(canvas, {
+      labels: JSON.parse(canvas.dataset.labels ?? '[]'),
+      onCount: (n) => counter && (counter.textContent = n.toLocaleString('en-US')),
+    });
+  }
+</script>

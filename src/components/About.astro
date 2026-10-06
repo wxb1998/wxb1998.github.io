@@ -1,0 +1,267 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+  index: string;
+  name: string;
+  avatar?: string;
+  interests: string[];
+  highlights: { value: number; suffix?: string; label: string }[];
+}
+const { index, name, avatar, interests, highlights } = Astro.props;
+const initials = name
+  .replace(/[^\p{L}\s]/gu, '')
+  .split(/\s+/)
+  .filter(Boolean)
+  .map((w) => w[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
+---
+
+<section class="section" id="about">
+  <div class="container">
+    <SectionHeader index={index} title="About" kicker="whoami" />
+
+    <div class="grid">
+      <div class="text reveal">
+        <div class="prose"><slot /></div>
+        {
+          interests.length > 0 && (
+            <>
+              <p class="label mono">focus_areas</p>
+              <ul class="chips">
+                {interests.map((i) => (
+                  <li class="chip chip-accent">{i}</li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+      </div>
+
+      <aside class="side reveal" style="--i: 1">
+        {
+          avatar && (
+            <figure class="portrait" data-portrait>
+              <img src={avatar} alt={`Portrait of ${name}`} width="280" height="280" loading="lazy" decoding="async" />
+              <span class="monogram" aria-hidden="true">{initials}</span>
+              <span class="corner tl" aria-hidden="true" />
+              <span class="corner tr" aria-hidden="true" />
+              <span class="corner bl" aria-hidden="true" />
+              <span class="corner br" aria-hidden="true" />
+              <span class="scan" aria-hidden="true" />
+              <figcaption class="mono">id: {name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '')}</figcaption>
+            </figure>
+          )
+        }
+
+        {
+          highlights.length > 0 && (
+            <dl class="stats">
+              {highlights.map((h) => (
+                <div class="stat card">
+                  <dt class="mono">{h.label}</dt>
+                  <dd>
+                    <span data-count={h.value}>{h.value}</span>
+                    {h.suffix && <span class="suffix">{h.suffix}</span>}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .prose {
+    color: #c3cede;
+    font-size: clamp(1.02rem, 1.6vw, 1.12rem);
+  }
+
+  .prose :global(strong) {
+    color: var(--text);
+  }
+
+  .label {
+    margin: 32px 0 12px;
+    color: var(--dim);
+    font-size: 0.78rem;
+  }
+
+  .label::before {
+    content: '# ';
+    color: var(--accent);
+  }
+
+  .side {
+    display: grid;
+    gap: 16px;
+  }
+
+  .portrait {
+    position: relative;
+    margin: 0 0 8px;
+    padding: 14px;
+    max-width: 320px;
+  }
+
+  .portrait img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    background: var(--bg-raised);
+    filter: saturate(0.9) contrast(1.05);
+  }
+
+  /* Shown only if the photo fails to load */
+  .monogram {
+    position: absolute;
+    inset: 14px 14px 40px;
+    display: none;
+    place-items: center;
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at 30% 20%, rgb(56 225 255 / 0.25), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgb(255 92 200 / 0.2), transparent 55%),
+      var(--bg-raised);
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .portrait.no-photo img {
+    visibility: hidden;
+  }
+
+  .portrait.no-photo .monogram {
+    display: grid;
+  }
+
+  .corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--accent);
+    border-style: solid;
+    border-width: 0;
+  }
+
+  .tl {
+    top: 0;
+    left: 0;
+    border-top-width: 2px;
+    border-left-width: 2px;
+  }
+
+  .tr {
+    top: 0;
+    right: 0;
+    border-top-width: 2px;
+    border-right-width: 2px;
+  }
+
+  .bl {
+    bottom: 26px;
+    left: 0;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+  }
+
+  .br {
+    bottom: 26px;
+    right: 0;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+  }
+
+  /* A scan line sweeping over the photo */
+  .scan {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 14px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 16px var(--accent);
+    opacity: 0.7;
+    animation: scan 4.5s ease-in-out infinite;
+  }
+
+  .portrait figcaption {
+    margin-top: 12px;
+    color: var(--dim);
+    font-size: 0.72rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+    gap: 12px;
+    margin: 0;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .stat dt {
+    color: var(--muted);
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  .stat dd {
+    order: -1;
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .suffix {
+    color: var(--accent);
+  }
+
+  @keyframes scan {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(calc(min(292px, 100vw - 64px) - 4px));
+    }
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-portrait]').forEach((fig) => {
+    const img = fig.querySelector('img');
+    if (!img) return;
+    const fail = () => fig.classList.add('no-photo');
+    if (img.complete && img.naturalWidth === 0) fail();
+    else img.addEventListener('error', fail);
+  });
+</script>

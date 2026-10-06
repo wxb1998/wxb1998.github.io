@@ -1,0 +1,44 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  kicker?: string;
+}
+const { index, title, kicker } = Astro.props;
+---
+
+<header class="section-head reveal">
+  <p class="mono kicker"><span class="idx">{index}</span> // {kicker ?? title.toLowerCase()}</p>
+  <h2 data-scramble>{title}</h2>
+</header>
+
+<style>
+  .section-head {
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    color: var(--dim);
+    font-size: 0.8rem;
+    text-transform: lowercase;
+  }
+
+  .kicker::after {
+    content: '';
+    flex: 0 1 120px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong), transparent);
+  }
+
+  .idx {
+    color: var(--accent);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+  }
+</style>

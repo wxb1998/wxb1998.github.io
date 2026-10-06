@@ -1,0 +1,11 @@
+# One item per event. Dates are YYYY-MM or YYYY-MM-DD; items are sorted newest first automatically.
+# The text supports simple Markdown: **bold**, *italic*, `code` and [links](https://example.com).
+
+- date: "2026-10"
+  text: "[Something happened, e.g. a paper accepted at *Journal Name*.]"
+
+- date: "2026-06"
+  text: "[Gave a talk / poster at *Conference Name*.]"
+
+- date: "2025-09"
+  text: "[Started my Ph.D. at University.]"

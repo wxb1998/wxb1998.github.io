@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — not found" description="This page does not exist.">
+  <main id="main" class="wrap">
+    <p class="mono code">error 404</p>
+    <h1>Cell not found.</h1>
+    <p class="mono hint">&gt; this barcode didn't pass QC — the page you're looking for doesn't exist.</p>
+    <a class="btn btn-primary" href="/">cd ~ <span aria-hidden="true">→</span></a>
+  </main>
+</Base>
+
+<style>
+  .wrap {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+
+  .code {
+    margin: 0;
+    color: var(--magenta);
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 9vw, 5.5rem);
+  }
+
+  .hint {
+    margin: 0 0 12px;
+    color: var(--muted);
+  }
+</style>

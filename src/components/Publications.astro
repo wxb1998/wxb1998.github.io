@@ -1,0 +1,347 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionHeader from './SectionHeader.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  index: string;
+  publications: CollectionEntry<'publications'>[];
+  highlight: string[];
+}
+const { index, publications, highlight } = Astro.props;
+
+const norm = (s: string) => s.toLowerCase().replace(/[^a-zÀ-ɏ]/g, '');
+const highlighted = new Set(highlight.map(norm));
+const isMe = (author: string) => highlighted.has(norm(author.replace(/[*†#]+$/, '')));
+
+const years = [...new Set(publications.map((p) => p.data.year))].sort((a, b) => b - a);
+const hasSelected = publications.some((p) => p.data.selected);
+---
+
+<section class="section" id="publications">
+  <div class="container">
+    <SectionHeader index={index} title="Publications" kicker="cat publications.bib" />
+
+    {
+      hasSelected && (
+        <div class="filter mono reveal" role="group" aria-label="Filter publications">
+          <button type="button" aria-pressed="true" data-filter="all">all</button>
+          <button type="button" aria-pressed="false" data-filter="selected">selected</button>
+        </div>
+      )
+    }
+
+    <div class="years" data-pubs>
+      {
+        years.map((year) => (
+          <section class="year reveal" data-year>
+            <h3 class="mono">{year}</h3>
+            <ol>
+              {publications
+                .filter((p) => p.data.year === year)
+                .map(({ id, data }) => (
+                  <li class="pub" data-selected={String(data.selected)}>
+                    {data.abbr && <span class="abbr mono">{data.abbr}</span>}
+                    <div class="pub-body">
+                      <p class="pub-title">{data.url ? <a href={data.url}>{data.title}</a> : data.title}</p>
+                      <p class="authors">
+                        {data.authors.map((a, i) => (
+                          <>
+                            {isMe(a) ? <strong>{a}</strong> : a}
+                            {i < data.authors.length - 1 && ', '}
+                          </>
+                        ))}
+                      </p>
+                      <p class="venue">
+                        {data.venue && <em>{data.venue}</em>}
+                        {data.venue && ', '}
+                        {data.year}
+                        {data.note && <span class="note"> · {data.note}</span>}
+                      </p>
+                      <div class="actions mono">
+                        {data.pdf && (
+                          <a href={data.pdf}>
+                            <Icon name="paper" size={14} /> pdf
+                          </a>
+                        )}
+                        {data.doi && (
+                          <a href={`https://doi.org/${data.doi}`}>
+                            <Icon name="external" size={14} /> doi
+                          </a>
+                        )}
+                        {data.code && (
+                          <a href={data.code}>
+                            <Icon name="code" size={14} /> code
+                          </a>
+                        )}
+                        {data.abstract && (
+                          <details>
+                            <summary>abstract</summary>
+                            <p class="panel">{data.abstract}</p>
+                          </details>
+                        )}
+                        <details>
+                          <summary>cite</summary>
+                          <div class="panel bib">
+                            <pre id={`bib-${id}`}>{data.bibtex}</pre>
+                            <button type="button" class="copy" data-copy={`#bib-${id}`}>
+                              <Icon name="copy" size={14} /> <span data-copy-label>copy</span>
+                            </button>
+                          </div>
+                        </details>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </ol>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .filter {
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 28px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+
+  .filter button {
+    padding: 6px 16px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .filter button[aria-pressed='true'] {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .years[data-only-selected] .pub[data-selected='false'],
+  .years[data-only-selected] .year:not(:has(.pub[data-selected='true'])) {
+    display: none;
+  }
+
+  .year {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .year h3 {
+    color: var(--dim);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+  }
+
+  .pub {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 16px;
+    margin: -12px;
+    padding: 12px;
+    border-radius: 12px;
+    transition: background 0.25s;
+  }
+
+  .pub:hover {
+    background: var(--surface);
+  }
+
+  .abbr {
+    align-self: start;
+    min-width: 92px;
+    padding: 4px 10px;
+    border: 1px solid rgb(167 139 250 / 0.35);
+    border-radius: 6px;
+    background: rgb(167 139 250 / 0.1);
+    color: var(--violet);
+    font-size: 0.72rem;
+    text-align: center;
+  }
+
+  .pub-body {
+    grid-column: -2;
+  }
+
+  .pub-body p {
+    margin: 0;
+  }
+
+  .pub-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
+
+  .pub-title a {
+    color: var(--text);
+  }
+
+  .pub-title a:hover {
+    color: var(--accent);
+  }
+
+  .authors,
+  .venue {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .authors strong {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+  }
+
+  .note {
+    color: var(--dim);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.74rem;
+  }
+
+  .actions a,
+  .actions summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    list-style: none;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .actions summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .actions summary::after {
+    content: '+';
+    color: var(--dim);
+  }
+
+  .actions details[open] summary::after {
+    content: '−';
+  }
+
+  .actions a:hover,
+  .actions summary:hover,
+  .actions details[open] summary {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .actions details[open] {
+    flex-basis: 100%;
+    order: 10;
+  }
+
+  .panel {
+    margin-top: 10px !important;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgb(8 12 20 / 0.8);
+    color: #c3cede;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .bib {
+    position: relative;
+  }
+
+  .bib pre {
+    margin: 0;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--cyan);
+  }
+
+  .copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--bg-raised);
+    color: var(--muted);
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    cursor: pointer;
+  }
+
+  .copy:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  @media (max-width: 720px) {
+    .year {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .pub {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .abbr {
+      justify-self: start;
+      min-width: 0;
+    }
+  }
+</style>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-pubs]');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      list?.toggleAttribute('data-only-selected', btn.dataset.filter === 'selected');
+    }),
+  );
+</script>

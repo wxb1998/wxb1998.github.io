@@ -1,0 +1,146 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Projects from '../components/Projects.astro';
+import Timeline from '../components/Timeline.astro';
+import Skills from '../components/Skills.astro';
+import Publications from '../components/Publications.astro';
+import News from '../components/News.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { profileLinks } from '../lib/links';
+
+const site = (await getEntry('site', 'main'))!.data;
+const profile = (await getEntry('profile', 'main'))!.data;
+const aboutEntry = await getEntry('about', 'about');
+const { Content: AboutContent } = aboutEntry ? await render(aboutEntry) : { Content: null };
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const publications = (await getCollection('publications')).sort(
+  (a, b) => b.data.year - a.data.year || a.data.index - b.data.index,
+);
+const news = (await getCollection('news')).map((n) => n.data).sort((a, b) => b.date.localeCompare(a.date));
+const experience = (await getCollection('experience')).sort((a, b) => Number(a.id) - Number(b.id)).map((e) => e.data);
+const education = (await getCollection('education')).sort((a, b) => Number(a.id) - Number(b.id)).map((e) => e.data);
+const skills = (await getCollection('skills')).sort((a, b) => Number(a.id) - Number(b.id)).map((s) => s.data);
+
+const links = profileLinks(profile.links);
+const period = (start: string, end?: string) => (end ? `${start} — ${end}` : start);
+
+// Sections appear in the order listed in content/site.yaml; empty ones are skipped.
+const LABELS = {
+  about: 'About',
+  projects: 'Projects',
+  experience: 'Experience',
+  skills: 'Skills',
+  publications: 'Publications',
+  news: 'News',
+  education: 'Education',
+  contact: 'Contact',
+} as const;
+const hasContent: Record<keyof typeof LABELS, boolean> = {
+  about: true,
+  projects: projects.length > 0,
+  experience: experience.length > 0,
+  skills: skills.length > 0,
+  publications: publications.length > 0,
+  news: news.length > 0,
+  education: education.length > 0,
+  contact: Boolean(profile.contact || profile.links.email),
+};
+const sections = site.sections
+  .filter((id) => hasContent[id])
+  .map((id, i) => ({ id, label: LABELS[id], index: String(i + 1).padStart(2, '0') }));
+const indexOf = (id: string) => sections.find((s) => s.id === id)?.index ?? '';
+
+const title = `${profile.name} — ${profile.role}`;
+const description = site.description || profile.tagline;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.role,
+  description,
+  url: Astro.site?.href,
+  image: profile.avatar,
+  knowsAbout: profile.interests,
+  sameAs: links.filter((l) => !['email', 'cv'].includes(l.key)).map((l) => l.href),
+};
+---
+
+<Base title={title} description={description} image={profile.avatar} jsonLd={jsonLd}>
+  <Nav brand={profile.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '')} sections={sections} resume={profile.links.cv || undefined} />
+
+  <main id="main">
+    <Hero
+      name={profile.name}
+      role={profile.role}
+      affiliation={profile.affiliation}
+      tagline={profile.tagline}
+      status={profile.status}
+      links={links}
+      clusters={site.hero.clusters}
+      primaryTarget={sections.find((s) => s.id === 'projects')?.id ?? 'about'}
+    />
+
+    {
+      sections.map(({ id }) => {
+        switch (id) {
+          case 'about':
+            return (
+              <About index={indexOf(id)} name={profile.name} avatar={profile.avatar} interests={profile.interests} highlights={profile.highlights}>
+                {AboutContent && <AboutContent />}
+              </About>
+            );
+          case 'projects':
+            return <Projects index={indexOf(id)} projects={projects} />;
+          case 'experience':
+            return (
+              <Timeline
+                id={id}
+                index={indexOf(id)}
+                title="Experience"
+                kicker="git log --experience"
+                items={experience.map((e) => ({ title: e.role, org: e.org, period: period(e.start, e.end), meta: e.location, points: e.points }))}
+              />
+            );
+          case 'skills':
+            return <Skills index={indexOf(id)} groups={skills} />;
+          case 'publications':
+            return <Publications index={indexOf(id)} publications={publications} highlight={site.highlight_authors.length ? site.highlight_authors : [profile.name]} />;
+          case 'news':
+            return <News index={indexOf(id)} items={news} />;
+          case 'education':
+            return (
+              <Timeline
+                id={id}
+                index={indexOf(id)}
+                title="Education"
+                kicker="history --education"
+                items={education.map((e) => ({ title: e.degree, org: e.school, period: period(e.start, e.end), meta: e.detail }))}
+              />
+            );
+          case 'contact':
+            return (
+              <Contact
+                index={indexOf(id)}
+                heading={profile.contact?.heading ?? "Let's talk"}
+                text={profile.contact?.text ?? ''}
+                email={profile.links.email || undefined}
+                links={links}
+              />
+            );
+        }
+      })
+    }
+  </main>
+
+  <Footer name={profile.name} />
+</Base>
+
+<script>
+  import '../scripts/effects';
+</script>

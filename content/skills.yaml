@@ -1,0 +1,13 @@
+# Shown as a terminal window. Add, remove or rename groups freely.
+
+- group: Languages
+  items: [R, Python, Bash]
+
+- group: Single-cell
+  items: [Seurat, Scanpy, DoubletFinder, Scrublet, BBKNN, SCENIC, Monocle, CellPhoneDB]
+
+- group: Bulk RNA-seq
+  items: [HISAT2, STAR, Cell Ranger, DESeq2, clusterProfiler]
+
+- group: Workflow
+  items: [Git, Linux shell, Reproducible pipelines]

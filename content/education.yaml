@@ -1,0 +1,17 @@
+# Most recent first. `detail` is optional.
+
+- degree: "[Ph.D. in Field]"
+  school: "[University]"
+  start: "2025"
+  end: "present"
+  detail: "[Advisor: Prof. Name]"
+
+- degree: "[M.S. in Field]"
+  school: "[University]"
+  start: "2021"
+  end: "2024"
+
+- degree: "[B.S. in Field]"
+  school: "[University]"
+  start: "2017"
+  end: "2021"
