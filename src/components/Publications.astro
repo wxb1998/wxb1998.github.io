@@ -93,6 +93,11 @@ const hasSelected = publications.some((p) => p.data.selected);
                             <Icon name="code" size={14} /> code
                           </a>
                         )}
+                        {data.preprint && (
+                          <a href={data.preprint}>
+                            <Icon name="paper" size={14} /> preprint
+                          </a>
+                        )}
                         {data.abstract && (
                           <details>
                             <summary>abstract</summary>
