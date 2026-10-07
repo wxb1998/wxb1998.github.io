@@ -1,7 +1,7 @@
 import bibtexParse from '@orcid/bibtex-parse-js';
 
 /** Fields this site uses for display only; they are left out of the "Cite" BibTeX. */
-const SITE_FIELDS = new Set(['selected', 'abbr', 'pdf', 'code', 'note', 'abstract']);
+const SITE_FIELDS = new Set(['selected', 'abbr', 'pmid', 'pdf', 'code', 'note', 'abstract']);
 
 const ACCENTS: Record<string, string> = {
   '"': '̈', "'": '́', '`': '̀', '^': '̂', '~': '̃',
@@ -67,6 +67,7 @@ export function parseBibtex(text: string) {
       url: tags.url || (doi ? `https://doi.org/${doi}` : undefined),
       pdf: tags.pdf,
       code: tags.code,
+      pmid: tags.pmid,
       abbr: tags.abbr ? latexToText(tags.abbr) : undefined,
       note: tags.note ? latexToText(tags.note) : undefined,
       abstract: tags.abstract ? latexToText(tags.abstract) : undefined,

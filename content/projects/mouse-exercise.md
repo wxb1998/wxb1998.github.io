@@ -1,19 +1,20 @@
 ---
-title: Exercise and the Mouse Multi-Tissue Transcriptome
-summary: Single-cell, single-nucleus and bulk RNA-seq of mouse tissues in an exercise study.
-order: 2
-tags: [R, Python, Seurat, Scanpy, BBKNN, DESeq2]
-pipeline: [Mapping, QC, Doublets, Integration, Annotation, DEGs, Regulons, Cell–cell comm.]
+title: Exercise and Aging Across Mouse Tissues
+summary: Single-cell and single-nucleus atlas of 14 tissues from young and old mice after 12 months of exercise.
+order: 3
+tags: [scRNA-seq, snRNA-seq, exercise, Seurat, Scanpy]
+pipeline: [Mapping, QC, Doublets, Integration, Annotation, DEGs, Cell–cell comm., TF prediction]
 metrics:
-  - value: "3"
-    label: sequencing modalities
-  - value: "2"
-    label: parallel stacks (R + Python)
+  - value: "14"
+    label: tissues profiled
+  - value: "12 mo"
+    label: exercise intervention
 links:
+  paper: https://doi.org/10.1016/j.xinn.2023.100380
   code: https://github.com/wxb1998/Mouse-exercise-Project
 ---
 
-A multi-tissue view of how exercise reshapes gene expression in mice. Parallel workflows in Seurat (R)
-and Scanpy (Python) cover read mapping, quality control, doublet detection, batch integration and
-cell-type annotation, followed by differential expression, regulon inference and ligand–receptor
-analysis. Bulk RNA-seq is processed from trimming through alignment, counting and DESeq2.
+A single-cell and single-nucleus atlas of 14 tissues from young and old mice after 12 months of exercise.
+I was responsible for the single-nucleus part, from quality control and integration to differential
+expression, cell–cell communication and transcription-factor prediction. The study linked the benefits of
+exercise to the circadian clock protein BMAL1.

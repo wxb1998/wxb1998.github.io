@@ -1,7 +1,7 @@
 # Page-level settings. Your actual content lives in the other files in this folder.
 
 # Text shown in search results and link previews. If empty, your tagline is used.
-description: "[Your Name] — computational biologist working on single-cell transcriptomics of aging and exercise."
+description: "Xuebao Wang — Ph.D. student in Human Genetics at the University of Pittsburgh, using single-cell multi-omics to study gene regulation in Alzheimer's disease and aging."
 
 # Order of sections on the page. Delete a line to hide that section.
 # Sections whose content file is empty are hidden automatically.
@@ -17,8 +17,8 @@ sections:
 
 # Name variants to bold in publication author lists (as they appear in BibTeX)
 highlight_authors:
-  - "[Your Name]"
+  - "Xuebao Wang"
 
 hero:
-  # Labels drawn next to the clusters of the animated point cloud
-  clusters: [ZG, ZF, ZR, Chromaffin, EC, Fib, Mac, T cell, Hep]
+  # Labels drawn next to the clusters of the animated point cloud (brain cell types)
+  clusters: [ExN, InN, Astro, Oligo, OPC, Micro, Endo, Peri, Fib]

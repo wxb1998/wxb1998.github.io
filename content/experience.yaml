@@ -1,18 +1,31 @@
 # Research and work experience, most recent first. `end`, `location` and `points` are optional.
 # Keep each point to one line, and lead with what you did and what it achieved.
 
-- role: "[Graduate Researcher]"
-  org: "[Lab Name, University]"
-  start: "2025"
+- role: "Graduate Student Researcher"
+  org: "Koldamova & Lefterov Lab, University of Pittsburgh"
+  start: "2024-08"
   end: "present"
-  location: "[City]"
+  location: "Pittsburgh, PA"
   points:
-    - "[Built single-cell analysis pipelines in R and Python for multi-tissue datasets.]"
-    - "[Identified aging-associated cell states and regulators in primate adrenal tissue.]"
+    - "Analyze single-nucleus multiome (RNA + ATAC) data from Alzheimer's disease mouse models to map the transcription factors and regulatory networks behind cell-type-specific disease changes."
+    - "Co-authored an integrated scRNA-seq, snATAC-seq and RXR ChIP-seq study of how the RXR agonist bexarotene remodels chromatin and gene networks in APP/PS1 mice (Cells, 2025)."
+    - "Ongoing: multi-omics profiling of peripheral immune cells in Alzheimer's disease."
 
-- role: "[Research Intern]"
-  org: "[Company Name]"
-  start: "2024-06"
-  end: "2024-09"
+- role: "Bioinformatics Engineer"
+  org: "Xuetao Cao Lab, Changping Laboratory"
+  start: "2024-01"
+  end: "2024-07"
+  location: "Beijing, China"
   points:
-    - "[What you worked on, and the result.]"
+    - "Responsible for single-cell multiome (RNA + ATAC) data analysis."
+
+- role: "Graduate Student Researcher (M.Med.)"
+  org: "Institute of Zoology, Chinese Academy of Sciences"
+  start: "2020-09"
+  end: "2023-12"
+  location: "Beijing, China"
+  points:
+    - "Led the bioinformatics analysis for a single-nucleus atlas of primate adrenal aging as co-first author, including pseudotime analysis of adrenocortical differentiation (Nature Aging, 2024)."
+    - "Led the single-nucleus analysis of a 14-tissue atlas of exercise and aging in mice: QC, integration, differential expression, cell–cell communication and transcription-factor prediction (The Innovation, 2023)."
+    - "Co-first author on single-nucleus profiling of human synovial aging that identified FOXO1 as a geroprotector and VCAM1 as a mediator of immune-cell recruitment (Protein & Cell, 2024)."
+    - "Contributed analysis and 3D imaging validation (Imaris) to a study of CHIT1-positive microglia in primate spinal cord aging (Nature, 2023)."

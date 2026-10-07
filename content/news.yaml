@@ -1,11 +1,23 @@
 # One item per event. Dates are YYYY-MM or YYYY-MM-DD; items are sorted newest first automatically.
 # The text supports simple Markdown: **bold**, *italic*, `code` and [links](https://example.com).
 
-- date: "2026-10"
-  text: "[Something happened, e.g. a paper accepted at *Journal Name*.]"
+- date: "2025-12"
+  text: "Paper on RXR-driven chromatin and transcriptional remodeling in an Alzheimer's disease mouse model published in *Cells*."
 
-- date: "2026-06"
-  text: "[Gave a talk / poster at *Conference Name*.]"
+- date: "2024-08"
+  text: "Started my Ph.D. in Human Genetics at the University of Pittsburgh."
 
-- date: "2025-09"
-  text: "[Started my Ph.D. at University.]"
+- date: "2024-03"
+  text: "Co-first-author paper on aging of the primate adrenal gland published in *Nature Aging*."
+
+- date: "2024-01"
+  text: "Joined Dr. Xuetao Cao's group at Changping Laboratory in Beijing as a bioinformatics engineer."
+
+- date: "2023-12"
+  text: "Co-first-author paper on FOXO1 and aging of the human synovium published online in *Protein & Cell*."
+
+- date: "2023-10"
+  text: "Co-authored paper on CHIT1-positive microglia in the aging primate spinal cord published in *Nature*."
+
+- date: "2023-01"
+  text: "Co-authored single-cell atlas of exercise effects across mouse tissues published in *The Innovation*."

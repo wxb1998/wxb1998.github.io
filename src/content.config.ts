@@ -109,6 +109,7 @@ const publications = defineCollection({
     url: z.string().optional(),
     pdf: z.string().optional(),
     code: z.string().optional(),
+    pmid: z.string().optional(),
     abbr: z.string().optional(),
     note: z.string().optional(),
     abstract: z.string().optional(),

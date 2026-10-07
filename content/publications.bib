@@ -4,30 +4,90 @@
 % Optional extra fields this site understands:
 %   selected = {true}        show under the "Selected" filter
 %   abbr     = {Nat. Aging}  short badge shown next to the entry
+%   pmid     = {12345678}    adds a PubMed link
 %   pdf      = {...}         link to the PDF (a URL, or /papers/file.pdf after putting it in public/papers/)
 %   code     = {...}         link to the code repository
 %   note     = {...}         short line under the venue, e.g. {* Equal contribution}
 %   abstract = {...}         shown in an expandable "Abstract" panel
-% Mark equal contribution by adding * after a name, e.g. author = {Wang*, Corey and Li*, Bo}
+% Mark equal contribution by adding * after a name, e.g. author = {Wang, Qiaoran* and Wang, Xuebao*}
+% Author lists longer than 8 names are shortened on the page (first 3 … you … last 3); the full
+% list stays in the "cite" panel.
 
-@article{placeholder2026adrenal,
-  title    = {[Title of the paper]},
-  author   = {[Author A]* and [Your Name]* and [Author C] and [Corresponding Author]},
-  journal  = {[Journal Name]},
-  year     = {2026},
-  doi      = {10.0000/placeholder},
-  abbr     = {[Journal]},
+@article{lu2025rxr,
+  title    = {{RXR}-Mediated Remodeling of Transcriptional and Chromatin Landscapes in {APP} Mouse Brain: Insights from Integrated Single-Cell {RNA} and {ATAC} Profiling},
+  author   = {Lu, Yi and Wang, Xuebao and Saibro-Girardi, Carolina and Fitz, Nicholas F. and Koldamova, Radosveta and Lefterov, Iliya},
+  journal  = {Cells},
+  volume   = {14},
+  number   = {24},
+  pages    = {1970},
+  year     = {2025},
+  doi      = {10.3390/cells14241970},
+  pmid     = {41439990},
+  abbr     = {Cells},
+  selected = {true},
+  abstract = {Ligand-activated Retinoid X Receptors (RXRs) regulate gene networks essential for neural development, neuroinflammation, and metabolism. Understanding how RXR activation influences chromatin architecture and gene expression may reveal mechanisms relevant to neurodegenerative diseases. We used Bexarotene-treated APP/PS1ΔE9 mice to study RXR-mediated regulatory mechanisms by integrating single-nucleus ATAC-seq (snATAC-seq) with single-cell RNA-seq (scRNA-seq) and validating differentially accessible chromatin peaks using RXR ChIP-seq. Transcription factor (TF) footprinting analysis mapped regulatory networks activated by ligand-bound RXR. Our integrated analyses revealed a multilayered transcriptional cascade initiated by RXR signaling. We identified RXR-centered regulatory circuits involving heterodimer activation, upregulation of downstream TFs, and induction of metabolic pathways relevant to neural function. Detailed analysis of neuronal TF networks revealed that Bexarotene modulates RXR's role through existing regulatory scaffolds rather than creating new ones. This study demonstrates that combining scRNA-seq, snATAC-seq, and ChIP-seq enables comprehensive analysis of RXR-mediated transcriptional regulation. RXR activation orchestrates cell-type-specific chromatin remodeling of gene networks controlling neuroinflammation, lipid metabolism, and synaptic signaling, providing mechanistic insights into RXR-dependent transcriptional programs in Alzheimer's disease pathology.}
+}
+
+@article{wang2024adrenal,
+  title    = {Aging induces region-specific dysregulation of hormone synthesis in the primate adrenal gland},
+  author   = {Wang, Qiaoran* and Wang, Xuebao* and Liu, Beibei* and Ma, Shuai* and Zhang, Feng* and Sun, Shuhui and Jing, Yaobin and Fan, Yanling and Ding, Yingjie and Xiong, Muzhao and Li, Jiaming and Zhai, Qiaocheng and Zheng, Yandong and Liu, Chengyu and Xu, Gang and Yang, Jiayin and Wang, Si and Ye, Jinlin and Izpisua Belmonte, Juan Carlos and Qu, Jing and Liu, Guang-Hui and Zhang, Weiqi},
+  journal  = {Nature Aging},
+  volume   = {4},
+  number   = {3},
+  pages    = {396--413},
+  year     = {2024},
+  doi      = {10.1038/s43587-024-00588-1},
+  pmid     = {38503993},
+  abbr     = {Nat. Aging},
   selected = {true},
   code     = {https://github.com/wxb1998/R_adrenal},
   note     = {* Equal contribution},
-  abstract = {[Paste the abstract here, or delete this field.]}
+  abstract = {Adrenal glands, vital for steroid secretion and the regulation of metabolism, stress responses and immune activation, experience age-related decline, impacting systemic health. However, the regulatory mechanisms underlying adrenal aging remain largely uninvestigated. Here we established a single-nucleus transcriptomic atlas of both young and aged primate suprarenal glands, identifying lipid metabolism and steroidogenic pathways as core processes impacted by aging. We found dysregulation in centripetal adrenocortical differentiation in aged adrenal tissues and cells in the zona reticularis region, responsible for producing dehydroepiandrosterone sulfate (DHEA-S), were highly susceptible to aging, reflected by senescence, exhaustion and disturbed hormone production. Remarkably, LDLR was downregulated in all cell types of the outer cortex, and its targeted inactivation in human adrenal cells compromised cholesterol uptake and secretion of dehydroepiandrosterone sulfate, as observed in aged primate adrenal glands. Our study provides crucial insights into endocrine physiology, holding therapeutic promise for addressing aging-related adrenal insufficiency and delaying systemic aging.}
 }
 
-@article{placeholder2025exercise,
-  title    = {[Title of another paper]},
-  author   = {[Your Name] and [Author B] and [Corresponding Author]},
-  journal  = {[Journal Name]},
-  year     = {2025},
-  abbr     = {[Journal]},
-  code     = {https://github.com/wxb1998/Mouse-exercise-Project}
+@article{liu2024foxo1,
+  title    = {Identification of {FOXO1} as a geroprotector in human synovium through single-nucleus transcriptomic profiling},
+  author   = {Liu, Feifei* and Lu, Yi* and Wang, Xuebao* and Sun, Shuhui* and Pan, Huize and Wang, Min and Wang, Zehua and Zhang, Weiqi and Ma, Shuai and Sun, Guoqiang and Chu, Qun and Wang, Si and Qu, Jing and Liu, Guang-Hui},
+  journal  = {Protein \& Cell},
+  volume   = {15},
+  number   = {6},
+  pages    = {441--459},
+  year     = {2024},
+  doi      = {10.1093/procel/pwad060},
+  pmid     = {38092362},
+  abbr     = {Protein Cell},
+  selected = {true},
+  note     = {* Equal contribution},
+  abstract = {The synovium, a thin layer of tissue that is adjacent to the joints and secretes synovial fluid, undergoes changes in aging that contribute to intense shoulder pain and other joint diseases. However, the mechanism underlying human synovial aging remains poorly characterized. Here, we generated a comprehensive transcriptomic profile of synovial cells present in the subacromial synovium from young and aged individuals. By delineating aging-related transcriptomic changes across different cell types and their associated regulatory networks, we identified two subsets of mesenchymal stromal cells (MSCs) in human synovium, which are lining and sublining MSCs, and found that angiogenesis and fibrosis-associated genes were upregulated whereas genes associated with cell adhesion and cartilage development were downregulated in aged MSCs. Moreover, the specific cell-cell communications in aged synovium mirrors that of aging-related inflammation and tissue remodeling, including vascular hyperplasia and tissue fibrosis. In particular, we identified forkhead box O1 (FOXO1) as one of the major regulons for aging differentially expressed genes (DEGs) in synovial MSCs, and validated its downregulation in both lining and sublining MSC populations of the aged synovium. In human FOXO1-depleted MSCs derived from human embryonic stem cells, we recapitulated the senescent phenotype observed in the subacromial synovium of aged donors. These data indicate an important role of FOXO1 in the regulation of human synovial aging. Overall, our study improves our understanding of synovial aging during joint degeneration, thereby informing the development of novel intervention strategies aimed at rejuvenating the aged joint.}
+}
+
+@article{sun2023chit1,
+  title    = {{CHIT1}-positive microglia drive motor neuron ageing in the primate spinal cord},
+  author   = {Sun, Shuhui* and Li, Jiaming* and Wang, Si* and Li, Jingyi* and Ren, Jie* and Bao, Zhaoshi* and Sun, Le* and Ma, Xibo* and Zheng, Fangshuo and Ma, Shuai and Sun, Liang and Wang, Min and Yu, Yan and Ma, Miyang and Wang, Qiaoran and Chen, Zhiyuan and Ma, He and Wang, Xuebao and Wu, Zeming and Zhang, Hui and Yan, Kaowen and Yang, Yuanhan and Zhang, Yixin and Zhang, Sheng and Lei, Jinghui and Teng, Zhao-Qian and Liu, Chang-Mei and Bai, Ge and Wang, Yan-Jiang and Li, Jian and Wang, Xiaoqun and Zhao, Guoguang and Jiang, Tao and Belmonte, Juan Carlos Izpisua and Qu, Jing and Zhang, Weiqi and Liu, Guang-Hui},
+  journal  = {Nature},
+  volume   = {624},
+  number   = {7992},
+  pages    = {611--620},
+  year     = {2023},
+  doi      = {10.1038/s41586-023-06783-1},
+  pmid     = {37907096},
+  abbr     = {Nature},
+  note     = {* Equal contribution},
+  abstract = {Ageing is a critical factor in spinal-cord-associated disorders, yet the ageing-specific mechanisms underlying this relationship remain poorly understood. Here, to address this knowledge gap, we combined single-nucleus RNA-sequencing analysis with behavioural and neurophysiological analysis in non-human primates (NHPs). We identified motor neuron senescence and neuroinflammation with microglial hyperactivation as intertwined hallmarks of spinal cord ageing. As an underlying mechanism, we identified a neurotoxic microglial state demarcated by elevated expression of CHIT1 (a secreted mammalian chitinase) specific to the aged spinal cords in NHP and human biopsies. In the aged spinal cord, CHIT1-positive microglia preferentially localize around motor neurons, and they have the ability to trigger senescence, partly by activating SMAD signalling. We further validated the driving role of secreted CHIT1 on MN senescence using multimodal experiments both in vivo, using the NHP spinal cord as a model, and in vitro, using a sophisticated system modelling the human motor-neuron-microenvironment interplay. Moreover, we demonstrated that ascorbic acid, a geroprotective compound, counteracted the pro-senescent effect of CHIT1 and mitigated motor neuron senescence in aged monkeys. Our findings provide the single-cell resolution cellular and molecular landscape of the aged primate spinal cord and identify a new biomarker and intervention target for spinal cord degeneration.}
+}
+
+@article{sun2023exercise,
+  title    = {A single-cell transcriptomic atlas of exercise-induced anti-inflammatory and geroprotective effects across the body},
+  author   = {Sun, Shuhui* and Ma, Shuai* and Cai, Yusheng* and Wang, Si* and Ren, Jie* and Yang, Yuanhan* and Ping, Jiale and Wang, Xuebao and Zhang, Yiyuan and Yan, Haoteng and Li, Wei and Rodriguez Esteban, Concepcion and Yu, Yan and Liu, Feifei and Izpisua Belmonte, Juan Carlos and Zhang, Weiqi and Qu, Jing and Liu, Guang-Hui},
+  journal  = {The Innovation},
+  volume   = {4},
+  number   = {1},
+  pages    = {100380},
+  year     = {2023},
+  doi      = {10.1016/j.xinn.2023.100380},
+  pmid     = {36747595},
+  abbr     = {Innovation},
+  code     = {https://github.com/wxb1998/Mouse-exercise-Project},
+  note     = {* Equal contribution},
+  abstract = {Exercise benefits the whole organism, yet, how tissues across the body orchestrally respond to exercise remains enigmatic. Here, in young and old mice, with or without exercise, and exposed to infectious injury, we characterized the phenotypic and molecular adaptations to a 12-month exercise across 14 tissues/organs at single-cell resolution. Overall, exercise protects tissues from infectious injury, although more effectively in young animals, and benefits aged individuals in terms of inflammaging suppression and tissue rejuvenation, with structural improvement in the central nervous system and systemic vasculature being the most prominent. In vascular endothelial cells, we found that readjusting the rhythmic machinery via the core circadian clock protein BMAL1 delayed senescence and facilitated recovery from infectious damage, recapitulating the beneficial effects of exercise. Our study underscores the effect of exercise in reconstituting the youthful circadian clock network and provides a foundation for further investigating the interplay between exercise, aging, and immune challenges across the whole organism.}
 }
